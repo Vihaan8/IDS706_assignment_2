@@ -147,19 +147,20 @@ The analysis reveals that **company rating** is the most influential factor for 
 
 ### Visualization Insights:
 
-To validate  statistical findings and uncover patterns not immediately apparent in the numbers, I created four complementary visualizations:
+To validate my statistical findings and uncover patterns not immediately apparent in the numbers, I created four complementary visualizations:
+
 
 ![Alt Text](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
 
-**Upper Left - Average Salary by Company Size**: This bar chart reveals that salary differences across company sizes are surprisingly minimal (all within ~$5K range), contradicting the common assumption that larger companies always pay significantly more. The visual confirms our statistical finding that company size has modest predictive power.
+**Upper Left - Average Salary by Company Size**: This bar chart reveals that salary differences across company sizes are surprisingly minimal (all within ~$5K range), contradicting the common assumption that larger companies always pay significantly more. The visual confirms my statistical finding that company size has modest predictive power.
 
-**Upper Right - Top Industries by Salary**: This horizontal bar chart clearly illustrates the industry hierarchy, showing Biotech & Pharmaceuticals with a substantial $10K+ premium over average. The visual spacing between industries demonstrates why industry choice appears impactful in individual cases, even though our ML model ranked it as secondary to company rating.
+**Upper Right - Top Industries by Salary**: This horizontal bar chart clearly illustrates the industry hierarchy, showing Biotech & Pharmaceuticals with a substantial $10K+ premium over average. The visual spacing between industries demonstrates why industry choice appears impactful in individual cases, even though my ML model ranked it as secondary to company rating.
 
-**Lower Left - Salary Distribution**: This histogram confirms our data quality with a normal distribution centered around $70-80K. The shape validates that our salary extraction and filtering processes captured realistic market ranges without artificial clustering or outliers skewing results.
+**Lower Left - Salary Distribution**: This histogram confirms my data quality with a normal distribution centered around $70-80K. The shape validates that my salary extraction and filtering processes captured realistic market ranges without artificial clustering or outliers skewing results.
 
 **Lower Right - Salary vs Company Rating**: This scatter plot was crucial for understanding why company rating emerged as the top predictor. While individual points appear scattered, the ML model detected subtle patterns across the 2,252 data points that aren't obvious to the human eye, explaining the apparent contradiction between visual assessment and statistical importance.
 
-### How We Reached Our Conclusions:
+### How I Reached My Conclusions:
 
 1. **Statistical Analysis**: Random Forest algorithm processed all factors simultaneously, revealing company rating as the strongest predictor despite visual scatter
 2. **Visual Validation**: Charts confirmed that while industry shows dramatic individual differences, company rating's predictive power operates across all industries and sizes
@@ -170,7 +171,6 @@ To validate  statistical findings and uncover patterns not immediately apparent 
 - **Industry selection matters**: Visual evidence shows clear $10K+ premiums in top sectors
 - **Company size is overrated**: Minimal salary variation across different company sizes
 - **Look beyond surface metrics**: The most predictive factors may not be the most visually obvious
-
 
 
 ## Troubleshooting
