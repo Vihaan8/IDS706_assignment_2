@@ -1,14 +1,13 @@
 # Mini-Assignment 2 - Data Analyst Salary Analysis
 
-## Course Information
+## 🎓 Course Information
 
 **Course:** Data Engineering Systems (IDS 706)  
-**Assignment:** Mini Project - Data Analysis  
+**Assignment:** Mini Assignment - Data Analysis  
 **Institution:** Duke University  
-**Focus:** Data science workflow with professional development practices
 
 
-## Project Overview
+## 📊 Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
 
 This repository contains a **Data Analyst Salary Analysis** project for **Data Engineering Systems (IDS 706)** mini assignment. The project analyzes a dataset of Data Analyst job postings to identify the key factors that influence salary levels, demonstrating data science workflows including data cleaning, exploratory analysis, machine learning, and visualization.
@@ -20,16 +19,19 @@ The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/
 ## 📁 Project Files
 
 ```
-📦 salary-analysis/
+   salary-analysis/
 ├── 📄 salary_analysis.py       # Main analysis script
 ├── 📄 test_salary_analysis.py  # Unit tests for the analysis
 ├── 📄 requirements.txt         # Required Python packages
 ├── 📄 Makefile                # Build automation and commands
 ├── 📄 README.md               # This documentation
-└── 📄 DataAnalyst.csv         # Dataset 
+├── 📄 DataAnalyst.csv         # Dataset 
+└── 📁 pandas_polar_performance/ # Performance analysis with Polars
+    ├── performance_benchmark.py
+    └── POLARS_PERFORMANCE_ANALYSIS.md
 ```
 
-## Features
+## ✨ Features
 - **Python 3.11** environment setup
 - **Data cleaning and preprocessing** with pandas
 - **Exploratory Data Analysis** with statistical grouping
@@ -42,7 +44,7 @@ The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/
 - **Test coverage** reporting
 
 
-## Dependencies
+## 📦 Dependencies
 
 The project uses the following Python packages (defined in `requirements.txt`):
 
@@ -56,7 +58,7 @@ The project uses the following Python packages (defined in `requirements.txt`):
 - **flake8>=4.0.0** - Code linting
 
 
-## Setup Instructions
+## ⚙️ Setup Instructions
 
 ### Prerequisites
 - **Python 3.7+** installed
@@ -74,7 +76,7 @@ The project uses the following Python packages (defined in `requirements.txt`):
    ```
 
 
-## Usage
+## 🚀 Usage
 
 The project uses a Makefile for automated workflow management:
 
@@ -99,7 +101,7 @@ make format     # Format code
 make lint       # Check code quality
 make run        # Execute analysis
 ```
-## Testing
+## 🧪 Testing
 
 The project includes unit tests that verify:
 - Salary extraction from various text formats
@@ -110,7 +112,7 @@ The project includes unit tests that verify:
 Run tests with: `make test`
 
 
-## Analysis Workflow
+## 🔄 Analysis Workflow
 
 The analysis follows a structured data science pipeline:
 
@@ -138,8 +140,11 @@ The analysis follows a structured data science pipeline:
    - Answers the research question
    - Provides data-driven insights
 
+## ⚡ Performance Analysis
+This project includes a comprehensive performance comparison between pandas and Polars for data processing operations. The analysis benchmarks data loading, cleaning, and grouping operations to evaluate the efficiency of modern data tools. For detailed performance results, benchmarking methodology, and insights, see the complete analysis in pandas_polar_performance/POLARS_PERFORMANCE_ANALYSIS.md.
 
-## Key Findings
+
+## 🔍 Key Findings
 
 The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. This finding emerges from both statistical analysis and visual examination of the data patterns.
 
@@ -181,7 +186,7 @@ To validate my statistical findings and uncover patterns not immediately apparen
 - **Look beyond surface metrics**: The most predictive factors may not be the most visually obvious
 
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 **Dataset not found:**
 ```

@@ -4,6 +4,8 @@ Question: Data Analyst Salary Analysis: What Factors Influence Salaries the Most
 This script analyzes a dataset of Data Analyst job postings to identify
 the key factors that influence salary levels.
 
+UPDATED: Added Polars for performance comparison with pandas
+
 Author: Vihaan Manchanda
 Date: September 6, 2025
 Course: IDS 706 - Data Engineering
@@ -13,13 +15,15 @@ Usage:
 
 Requirements:
     - DataAnalyst.csv file in the same directory
-    - Python packages: pandas, numpy, matplotlib, seaborn, scikit-learn
+    - Python packages: pandas, numpy, matplotlib, seaborn, scikit-learn, polars
 """
 
 import pandas as pd
+import polars as pl
 import numpy as np
 import matplotlib.pyplot as plt
 import re
+import time
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 import warnings
@@ -40,6 +44,17 @@ def load_data():
     except FileNotFoundError:
         print("ERROR: DataAnalyst.csv file not found!")
         print("Please ensure the CSV file is in the same directory as this script.")
+        return None
+
+
+def load_data_polars():
+    """Load the dataset using Polars"""
+    try:
+        df = pl.read_csv("DataAnalyst.csv")
+        print(f"Polars dataset shape: {df.shape}")
+        return df
+    except FileNotFoundError:
+        print("ERROR: DataAnalyst.csv file not found!")
         return None
 
 
@@ -68,8 +83,33 @@ def extract_salary(salary_str):
     return np.nan
 
 
+def extract_salary_polars(salary_str):
+    """Extract average salary from salary string - Polars compatible"""
+    if salary_str is None:
+        return None
+
+    # Remove text and extract numbers
+    salary_clean = (
+        str(salary_str)
+        .replace("(Glassdoor est.)", "")
+        .replace("$", "")
+        .replace(",", "")
+    )
+
+    # Find ranges like "37K-66K"
+    match = re.search(r"(\d+)K?\s*-\s*(\d+)K?", salary_clean)
+    if match:
+        min_sal = float(match.group(1))
+        max_sal = float(match.group(2))
+        if min_sal < 500:  # Convert K to thousands
+            min_sal *= 1000
+            max_sal *= 1000
+        return (min_sal + max_sal) / 2
+    return None
+
+
 def clean_data(df):
-    """Clean and preprocess the dataset"""
+    """Clean and preprocess the dataset using pandas"""
     print("Extracting salaries...")
     df["salary"] = df["Salary Estimate"].apply(extract_salary)
 
@@ -90,8 +130,61 @@ def clean_data(df):
     return df_clean
 
 
+def clean_data_polars(df):
+    """Clean and preprocess the dataset using Polars"""
+    print("Extracting salaries with Polars...")
+
+    # Extract salaries using map_elements (similar to apply)
+    df = df.with_columns(
+        [
+            pl.col("Salary Estimate")
+            .map_elements(extract_salary_polars, return_dtype=pl.Float64)
+            .alias("salary")
+        ]
+    )
+
+    # Clean ratings - only keep valid ratings (1.0 to 5.0)
+    df = df.with_columns(
+        [pl.col("Rating").cast(pl.Float64, strict=False).alias("rating")]
+    )
+
+    df = df.with_columns(
+        [
+            pl.when((pl.col("rating") >= 1.0) & (pl.col("rating") <= 5.0))
+            .then(pl.col("rating"))
+            .otherwise(None)
+            .alias("rating")
+        ]
+    )
+
+    # Clean company size - remove weird values like "-1"
+    df = df.with_columns(
+        [
+            pl.when(pl.col("Size").is_in(["-1", "Unknown"]))
+            .then(None)
+            .otherwise(pl.col("Size"))
+            .alias("Size")
+        ]
+    )
+
+    # Filter valid data
+    df_clean = df.filter(
+        (pl.col("salary").is_not_null())
+        & (pl.col("salary") >= 20000)
+        & (pl.col("salary") <= 200000)
+    )
+
+    record_count = df_clean.height
+    avg_salary = df_clean["salary"].mean()
+
+    print(f"Valid salary records: {record_count}")
+    print(f"Average salary: ${avg_salary:,.0f}")
+
+    return df_clean
+
+
 def analyze_company_size(df_clean):
-    """Analyze salary by company size"""
+    """Analyze salary by company size using pandas"""
     print("\n1. Company Size Impact:")
     size_data = df_clean.dropna(subset=["Size"])
 
@@ -113,8 +206,35 @@ def analyze_company_size(df_clean):
         return None
 
 
+def analyze_company_size_polars(df_clean):
+    """Analyze salary by company size using Polars"""
+    print("\n1. Company Size Impact (Polars):")
+
+    size_data = df_clean.filter(pl.col("Size").is_not_null())
+
+    if size_data.height > 0:
+        size_impact = (
+            size_data.group_by("Size")
+            .agg(
+                [
+                    pl.col("salary").mean().alias("mean"),
+                    pl.col("salary").count().alias("count"),
+                ]
+            )
+            .sort("mean", descending=True)
+        )
+
+        for row in size_impact.iter_rows(named=True):
+            print(f"   {row['Size']}: ${row['mean']:,.0f} (n={row['count']})")
+
+        return size_impact
+    else:
+        print("   No valid company size data")
+        return None
+
+
 def analyze_industry(df_clean):
-    """Analyze salary by industry (only reliable data)"""
+    """Analyze salary by industry (only reliable data) using pandas"""
     print("\n2. Top Industries (min 10 records):")
     industry_counts = df_clean["Industry"].value_counts()
     valid_industries = industry_counts[industry_counts >= 10].index
@@ -138,8 +258,45 @@ def analyze_industry(df_clean):
         return None
 
 
+def analyze_industry_polars(df_clean):
+    """Analyze salary by industry using Polars"""
+    print("\n2. Top Industries (min 10 records - Polars):")
+
+    # Get industry counts
+    industry_counts = (
+        df_clean.group_by("Industry")
+        .agg(pl.col("Industry").count().alias("count"))
+        .filter(pl.col("count") >= 10)
+    )
+
+    if industry_counts.height > 0:
+        valid_industries = industry_counts["Industry"].to_list()
+
+        industry_impact = (
+            df_clean.filter(pl.col("Industry").is_in(valid_industries))
+            .group_by("Industry")
+            .agg(
+                [
+                    pl.col("salary").mean().alias("mean"),
+                    pl.col("salary").count().alias("count"),
+                ]
+            )
+            .sort("mean", descending=True)
+            .head(5)
+        )
+
+        for row in industry_impact.iter_rows(named=True):
+            industry_name = row["Industry"][:40]
+            print(f"   {industry_name}: ${row['mean']:,.0f} (n={row['count']})")
+
+        return industry_impact
+    else:
+        print("   No industries with sufficient data")
+        return None
+
+
 def analyze_rating(df_clean):
-    """Analyze salary by company rating"""
+    """Analyze salary by company rating using pandas"""
     print("\n3. Rating Impact:")
     rating_data = df_clean.dropna(subset=["rating"])
 
@@ -230,6 +387,79 @@ def build_ml_model(df_clean):
         return None
 
 
+def performance_comparison():
+    """Compare performance between pandas and Polars"""
+    print("\n" + "=" * 50)
+    print("PERFORMANCE COMPARISON: PANDAS vs POLARS")
+    print("=" * 50)
+
+    # Test data loading
+    print("\n1. Data Loading Performance:")
+
+    # Pandas loading
+    start_time = time.time()
+    df_pandas = load_data()
+    pandas_load_time = time.time() - start_time
+    print(f"   Pandas loading time: {pandas_load_time:.3f} seconds")
+
+    # Polars loading
+    start_time = time.time()
+    df_polars = load_data_polars()
+    polars_load_time = time.time() - start_time
+    print(f"   Polars loading time: {polars_load_time:.3f} seconds")
+
+    if df_pandas is None or df_polars is None:
+        print("Cannot perform comparison - data loading failed")
+        return
+
+    # Test data cleaning
+    print("\n2. Data Cleaning Performance:")
+
+    # Pandas cleaning
+    start_time = time.time()
+    df_clean_pandas = clean_data(df_pandas.copy())
+    pandas_clean_time = time.time() - start_time
+    print(f"   Pandas cleaning time: {pandas_clean_time:.3f} seconds")
+
+    # Polars cleaning
+    start_time = time.time()
+    df_clean_polars = clean_data_polars(df_polars.clone())
+    polars_clean_time = time.time() - start_time
+    print(f"   Polars cleaning time: {polars_clean_time:.3f} seconds")
+
+    # Test groupby operations
+    print("\n3. GroupBy Operations Performance:")
+
+    # Pandas groupby
+    start_time = time.time()
+    analyze_company_size(df_clean_pandas)
+    pandas_groupby_time = time.time() - start_time
+    print(f"   Pandas groupby time: {pandas_groupby_time:.3f} seconds")
+
+    # Polars groupby
+    start_time = time.time()
+    analyze_company_size_polars(df_clean_polars)
+    polars_groupby_time = time.time() - start_time
+    print(f"   Polars groupby time: {polars_groupby_time:.3f} seconds")
+
+    # Summary
+    print("\n4. Performance Summary:")
+    total_pandas = pandas_load_time + pandas_clean_time + pandas_groupby_time
+    total_polars = polars_load_time + polars_clean_time + polars_groupby_time
+
+    print(f"   Total Pandas time: {total_pandas:.3f} seconds")
+    print(f"   Total Polars time: {total_polars:.3f} seconds")
+
+    if total_polars < total_pandas:
+        speedup = total_pandas / total_polars
+        print(f"   🚀 Polars is {speedup:.2f}x faster than Pandas!")
+    else:
+        slowdown = total_polars / total_pandas
+        print(f"   📊 Pandas is {slowdown:.2f}x faster than Polars")
+
+    print("=" * 50)
+
+
 def create_visualizations(df_clean, size_impact, industry_impact, rating_data):
     """Create visualizations of the analysis results"""
     print("\nCreating visualizations...")
@@ -312,15 +542,13 @@ def generate_conclusion(size_impact, industry_impact, importance):
 
 def main():
     """Main function to run the complete analysis"""
-    # Load data
+    # Original analysis with pandas
     df = load_data()
     if df is None:
         return
 
-    # Clean data
     df_clean = clean_data(df)
 
-    # Perform factor analysis
     print("\nFactor Analysis:")
     print("-" * 20)
 
@@ -328,17 +556,17 @@ def main():
     industry_impact = analyze_industry(df_clean)
     rating_impact = analyze_rating(df_clean)
 
-    # Build ML model
     importance = build_ml_model(df_clean)
 
-    # Create visualizations
     rating_data = (
         df_clean.dropna(subset=["rating"]) if "rating" in df_clean.columns else None
     )
     create_visualizations(df_clean, size_impact, industry_impact, rating_data)
 
-    # Generate conclusion
     generate_conclusion(size_impact, industry_impact, importance)
+
+    # Performance comparison (Extra Credit)
+    performance_comparison()
 
     print(f"\nAnalysis completed successfully!")
     print(f"Check the generated visualizations for detailed insights.")
