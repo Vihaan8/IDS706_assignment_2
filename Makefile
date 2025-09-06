@@ -6,12 +6,15 @@ format:
 	black *.py
 
 lint:
-	flake8 hello.py
+	flake8 salary_analysis.py
 
 test:
-	python -m pytest -vv --cov=hello test_hello.py
+	python -m pytest -vv --cov=salary_analysis test_salary_analysis.py
 
 clean:
 	rm -rf __pycache__ .pytest_cache .coverage
 
-all: install format lint test
+run: 
+	python salary_analysis.py
+	
+all: install format lint test run
