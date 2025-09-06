@@ -1,5 +1,13 @@
 # Mini-Assignment 2 - Data Analyst Salary Analysis
 
+## Course Information
+
+**Course:** Data Engineering Systems (IDS 706)  
+**Assignment:** Mini Project - Data Analysis  
+**Institution:** Duke University  
+**Focus:** Data science workflow with professional development practices
+
+
 ## Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
 
@@ -192,13 +200,6 @@ make: command not found
 ModuleNotFoundError: No module named 'pandas'
 ```
 **Solution:** Run `make all` to install all dependencies
-
-## Course Information
-
-**Course:** Data Engineering Systems (IDS 706)  
-**Assignment:** Mini Project - Data Analysis  
-**Institution:** Duke University  
-**Focus:** Data science workflow with professional development practices
 
 ---
 
