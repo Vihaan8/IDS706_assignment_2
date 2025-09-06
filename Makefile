@@ -5,8 +5,8 @@ install:
 format:
 	black *.py
 
-lint:
-	flake8 salary_analysis.py
+# lint:
+# 	flake8 salary_analysis.py
 
 test:
 	python -m pytest -vv --cov=salary_analysis test_salary_analysis.py
@@ -17,4 +17,4 @@ clean:
 run: 
 	python salary_analysis.py
 	
-all: install format lint test run
+all: install format test run

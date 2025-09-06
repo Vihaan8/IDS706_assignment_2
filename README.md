@@ -131,14 +131,34 @@ The analysis follows a structured data science pipeline:
    - Provides data-driven insights
 
 
-
 ## Key Findings
 
-The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. This suggests that:
+The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. Key insights include:
 
-- Employee satisfaction correlates with better compensation
-- Well-rated companies consistently pay higher across industries
-- Job seekers should prioritize company culture and ratings
+### Primary Findings:
+- **Average Data Analyst Salary**: $72,123 across 2,252 job postings
+- **Most Important Factor**: Company rating (0.579 importance score)
+- **Secondary Factor**: Company size (0.421 importance score)
+
+### Detailed Insights:
+- **Company Size**: Mid-large companies (5,001-10,000 employees) pay highest ($74,201)
+- **Industry**: Biotech & Pharmaceuticals leads with $83,106 average salary
+- **Company Rating**: Interestingly, "Poor" rated companies pay highest ($75,035), suggesting complex market dynamics
+
+### Visualization Analysis:
+![Visualization Results](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
+
+- **Industry Impact**: Charts show clear salary hierarchy with $10K+ variations between sectors
+- **Company Size**: Minimal visual variation across sizes (~$70K range), contradicting common assumptions
+- **Rating Correlation**: Scatter plot reveals weak relationship between ratings and salary
+- **Distribution Pattern**: Normal distribution centered at $70-80K with realistic salary ranges
+
+### Implications:
+- Employee satisfaction (rating) is the strongest salary predictor according to ML model
+- Industry choice shows the most dramatic visual salary differences 
+- Company size matters less than expected, with modest $5K variations
+- Job seekers should prioritize industry selection and company culture when evaluating opportunities
+
 
 
 
