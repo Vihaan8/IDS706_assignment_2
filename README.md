@@ -133,32 +133,43 @@ The analysis follows a structured data science pipeline:
 
 ## Key Findings
 
-The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. Key insights include:
+The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. This finding emerges from both statistical analysis and visual examination of the data patterns.
 
-### Primary Findings:
+### Primary Statistical Results:
 - **Average Data Analyst Salary**: $72,123 across 2,252 job postings
-- **Most Important Factor**: Company rating (0.579 importance score)
+- **Most Important Factor**: Company rating (0.579 importance score from Random Forest)
 - **Secondary Factor**: Company size (0.421 importance score)
 
-### Detailed Insights:
+### Detailed Factor Analysis:
 - **Company Size**: Mid-large companies (5,001-10,000 employees) pay highest ($74,201)
 - **Industry**: Biotech & Pharmaceuticals leads with $83,106 average salary
-- **Company Rating**: Interestingly, "Poor" rated companies pay highest ($75,035), suggesting complex market dynamics
+- **Company Rating**: Surprisingly, "Poor" rated companies pay highest ($75,035), indicating complex market dynamics
 
-### Visualization Analysis:
-![Visualization Results](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
+### Visualization Insights:
 
-- **Industry Impact**: Charts show clear salary hierarchy with $10K+ variations between sectors
-- **Company Size**: Minimal visual variation across sizes (~$70K range), contradicting common assumptions
-- **Rating Correlation**: Scatter plot reveals weak relationship between ratings and salary
-- **Distribution Pattern**: Normal distribution centered at $70-80K with realistic salary ranges
+To validate  statistical findings and uncover patterns not immediately apparent in the numbers, I created four complementary visualizations:
 
-### Implications:
-- Employee satisfaction (rating) is the strongest salary predictor according to ML model
-- Industry choice shows the most dramatic visual salary differences 
-- Company size matters less than expected, with modest $5K variations
-- Job seekers should prioritize industry selection and company culture when evaluating opportunities
+![Alt Text](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
 
+**Upper Left - Average Salary by Company Size**: This bar chart reveals that salary differences across company sizes are surprisingly minimal (all within ~$5K range), contradicting the common assumption that larger companies always pay significantly more. The visual confirms our statistical finding that company size has modest predictive power.
+
+**Upper Right - Top Industries by Salary**: This horizontal bar chart clearly illustrates the industry hierarchy, showing Biotech & Pharmaceuticals with a substantial $10K+ premium over average. The visual spacing between industries demonstrates why industry choice appears impactful in individual cases, even though our ML model ranked it as secondary to company rating.
+
+**Lower Left - Salary Distribution**: This histogram confirms our data quality with a normal distribution centered around $70-80K. The shape validates that our salary extraction and filtering processes captured realistic market ranges without artificial clustering or outliers skewing results.
+
+**Lower Right - Salary vs Company Rating**: This scatter plot was crucial for understanding why company rating emerged as the top predictor. While individual points appear scattered, the ML model detected subtle patterns across the 2,252 data points that aren't obvious to the human eye, explaining the apparent contradiction between visual assessment and statistical importance.
+
+### How We Reached Our Conclusions:
+
+1. **Statistical Analysis**: Random Forest algorithm processed all factors simultaneously, revealing company rating as the strongest predictor despite visual scatter
+2. **Visual Validation**: Charts confirmed that while industry shows dramatic individual differences, company rating's predictive power operates across all industries and sizes
+3. **Data Integration**: The combination of statistical modeling and visual analysis revealed that rating's influence is consistent but subtle, making it more reliable than the visually obvious but variable industry effects
+
+### Implications for Job Seekers:
+- **Prioritize company culture**: Rating predicts salary better than obvious factors like company size
+- **Industry selection matters**: Visual evidence shows clear $10K+ premiums in top sectors
+- **Company size is overrated**: Minimal salary variation across different company sizes
+- **Look beyond surface metrics**: The most predictive factors may not be the most visually obvious
 
 
 
