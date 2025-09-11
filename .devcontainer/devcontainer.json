@@ -1,0 +1,31 @@
+{
+  "name": "salary-analysis devcontainer",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/app",
+  "remoteUser": "dev",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": [
+          "-vv", "-rA", "-s",
+          "--durations=10",
+          "--cov=salary_analysis",
+          "--cov-report=term-missing"
+        ],
+        "python.formatting.provider": "black"
+      }
+    }
+  },
+  "postCreateCommand": "bash -lc 'make tests || true'"
+}
