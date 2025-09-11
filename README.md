@@ -19,16 +19,19 @@ The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/
 ## 📁 Project Files
 
 ```
-   salary-analysis/
-├── 📄 salary_analysis.py       # Main analysis script
-├── 📄 test_salary_analysis.py  # Unit tests for the analysis
-├── 📄 requirements.txt         # Required Python packages
-├── 📄 Makefile                # Build automation and commands
-├── 📄 README.md               # This documentation
-├── 📄 DataAnalyst.csv         # Dataset 
-└── 📁 pandas_polar_performance/ # Performance analysis with Polars
-    ├── performance_benchmark.py
-    └── POLARS_PERFORMANCE_ANALYSIS.md
+salary-analysis/
+├── DataAnalyst.csv                
+├── Dockerfile                   
+├── Makefile                       
+├── README.md                        
+├── requirements.txt                  
+├── salary_analysis.py               
+├── test_salary_analysis.py           
+├── pandas_polar_performance/   
+│   ├── performance_benchmark.py
+│   └── POLARS_PERFORMANCE_ANALYSIS.md
+└── .devcontainer/
+    └── devcontainer.json    
 ```
 
 ## ✨ Features
@@ -41,7 +44,9 @@ The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/
 - **Code formatting** with black
 - **Code linting** with flake8
 - **Makefile** for automated workflow
-- **Test coverage** reporting
+- **Comprehensive test suite** (unit, integration, system, and performance tests with coverage)
+- **Reproducible Docker image** for consistent execution
+- **VS Code Dev Container** for full development environment setup
 
 
 ## 📦 Dependencies
@@ -58,24 +63,6 @@ The project uses the following Python packages (defined in `requirements.txt`):
 - **flake8>=4.0.0** - Code linting
 
 
-## ⚙️ Setup Instructions
-
-### Prerequisites
-- **Python 3.7+** installed
-
-
-### Installation
-1. **Clone project repository** 
-   ```bash
-   git clone https://github.com/Vihaan8/IDS706_assignment_2.git
-   ```
-
-3. **Run the analysis:**
-   ```bash
-   make all
-   ```
-
-
 ## 🚀 Usage
 
 The project uses a Makefile for automated workflow management:
@@ -84,7 +71,7 @@ The project uses a Makefile for automated workflow management:
 - `make install` - Install and upgrade dependencies
 - `make format` - Format code using black
 - `make lint` - Lint code using flake8
-- `make test` - Run unit tests with coverage
+- `make tests` - Run all tests with coverage
 - `make run` - Execute the salary analysis
 - `make clean` - Remove cache files
 - `make all` - Run complete workflow (install, format, lint, test, run)
@@ -96,20 +83,68 @@ make all
 
 # Individual commands (if needed)
 make install    # Install dependencies
-make test       # Run tests
+make tests       # Run tests
 make format     # Format code
 make lint       # Check code quality
 make run        # Execute analysis
 ```
+
+
+## ⚙️ Setup & Testing
+
+### Local (optional)
+Run locally with Python 3.11:
+```bash
+make install
+make tests
+```
+
+### Docker (recommended)
+Build the Docker image:
+```bash
+docker build -t salary-analysis:dev .
+```
+Run tests inside the container (with coverage report in `htmlcov/`):
+```bash
+docker run --rm -it -v "$PWD":/app -w /app salary-analysis:dev   bash -lc "make tests"
+```
+
+### VS Code Dev Container 
+The Dev Container extends the Docker setup by letting VS Code open directly inside the container - giving a consistent Python environment, dependencies, and tools without needing to install them locally.
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)  
+2. Install [VS Code](https://code.visualstudio.com/)  
+3. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)  
+4. Open this repo in VS Code.  
+5. Press **View → Command Palette…** → search for **“Dev Containers: Reopen in Container”**.  
+6. Once inside, open a terminal and run:
+   ```bash
+   make tests
+   ```
+
+
+
+
 ## 🧪 Testing
 
-The project includes unit tests that verify:
-- Salary extraction from various text formats
-- Data cleaning functionality
-- Invalid input handling
-- Core function behavior
+This project includes comprehensive tests:
 
-Run tests with: `make test`
+- **Unit tests**: verify core functions (loading, filtering, salary extraction, ML).  
+- **Integration tests**: validate the full pipeline from loading → cleaning → analyzing.  
+- **System tests**: edge cases and end-to-end workflows with multiple datasets.  
+- **Performance tests**: compare execution speed between pandas and polars.
+
+Run all tests (with verbose output, timing, and coverage report):
+```bash
+make tests
+```
+Results:
+- Coverage summary in the terminal.
+- Full HTML coverage report in `htmlcov/index.html`.
+
+Here’s an example run of the full test suite with coverage:
+
+![Testing Results](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/tests_results_combined.png)
 
 
 ## 🔄 Analysis Workflow
