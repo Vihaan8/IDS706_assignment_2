@@ -532,9 +532,7 @@ def generate_conclusion(size_impact, industry_impact, importance):
         print(
             "Key Insight: While industry shows the highest individual salary differences,"
         )
-        print(
-            "the ML model reveals that company rating is the most reliable predictor"
-        )
+        print("the ML model reveals that company rating is the most reliable predictor")
         print("across all scenarios, making it the most influential factor overall.")
 
     print("=" * 50)
