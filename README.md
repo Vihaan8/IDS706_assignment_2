@@ -7,7 +7,8 @@
 **Institution:** Duke University  
 
 ## CI/CD Badge
-[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yml)
+[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
+
 
 
 ## 📊 Project Overview
