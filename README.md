@@ -6,6 +6,9 @@
 **Assignment:** Mini Assignment - Data Analysis  
 **Institution:** Duke University  
 
+## CI/CD Badge
+[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yml)
+
 
 ## 📊 Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
