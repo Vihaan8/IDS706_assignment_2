@@ -525,17 +525,17 @@ def generate_conclusion(size_impact, industry_impact, importance):
         most_important = importance.iloc[0]["feature"]
         print(f"3. ML MODEL: {most_important} is the most predictive factor")
 
-    print(f"\nConclusion: The analysis shows which factors have the biggest")
-    print(f"impact on Data Analyst salaries with cleaned, reliable data.")
+    print("Conclusion: The analysis shows which factors have the biggest")
+    print("impact on Data Analyst salaries with cleaned, reliable data.")
 
     if importance is not None:
         print(
-            f"\nKey Insight: While industry shows the highest individual salary differences,"
+            "Key Insight: While industry shows the highest individual salary differences,"
         )
         print(
-            f"the ML model reveals that company rating is the most reliable predictor"
+            "the ML model reveals that company rating is the most reliable predictor"
         )
-        print(f"across all scenarios, making it the most influential factor overall.")
+        print("across all scenarios, making it the most influential factor overall.")
 
     print("=" * 50)
 
@@ -554,7 +554,7 @@ def main():
 
     size_impact = analyze_company_size(df_clean)
     industry_impact = analyze_industry(df_clean)
-    rating_impact = analyze_rating(df_clean)
+    analyze_rating(df_clean)
 
     importance = build_ml_model(df_clean)
 
@@ -568,8 +568,8 @@ def main():
     # Performance comparison (Extra Credit)
     performance_comparison()
 
-    print(f"\nAnalysis completed successfully!")
-    print(f"Check the generated visualizations for detailed insights.")
+    print("Analysis completed successfully!")
+    print("Check the generated visualizations for detailed insights.")
 
 
 if __name__ == "__main__":

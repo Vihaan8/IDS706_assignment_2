@@ -5,7 +5,7 @@
 # Version 3.0 -> Added more tests and made the Makefile more comprehensive.
 
 
-.PHONY: all install test test-basic test-complete test-coverage test-all clean run benchmark help
+.PHONY: all install test test-basic test-complete test-coverage test-all clean run benchmark help format lint format-lint
 
 # Default target
 all: install test run
@@ -90,6 +90,20 @@ test-edge:
 	@echo "🧪 Running edge case tests only..."
 	python -m pytest test_salary_analysis_complete.py::TestEdgeCases -v
 
+# Format code using black
+format:
+	@echo "🎨 Formatting code with black..."
+	python -m black *.py
+
+# Lint code using flake8
+lint:
+	@echo "🔍 Linting code with flake8..."
+	python -m flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+# Format and lint together
+format-lint: format lint
+	@echo "✅ Code formatting and linting complete"
+	
 # Quick test (fast subset of tests)
 test-quick:
 	@echo "⚡ Running quick test subset..."
@@ -132,3 +146,6 @@ help:
 	@echo "  make dev          - Run development workflow"
 	@echo "  make validate     - Run full validation"
 	@echo "  make help         - Show this help message"
+	@echo "  make format       - Format code with black"
+	@echo "  make lint         - Lint code with flake8"
+	@echo "  make format-lint  - Format and lint code"
