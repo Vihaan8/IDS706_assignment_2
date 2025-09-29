@@ -120,11 +120,13 @@ def clean_data(raw_dataframe):
     print("Extracting salaries...")
     raw_dataframe["salary"] = raw_dataframe["Salary Estimate"].apply(parse_salary_range)
     raw_dataframe["rating"] = pd.to_numeric(raw_dataframe["Rating"], errors="coerce")
-    raw_dataframe["rating"] = raw_dataframe["rating"].where((raw_dataframe["rating"] >= 1.0) & (raw_dataframe["rating"] <= 5.0))
+    raw_dataframe["rating"] = raw_dataframe["rating"].where(
+        (raw_dataframe["rating"] >= 1.0) & (raw_dataframe["rating"] <= 5.0)
+    )
     raw_dataframe["Size"] = raw_dataframe["Size"].replace(["-1", "Unknown"], np.nan)
-    
+
     cleaned_salary_data = filter_valid_salary_range(raw_dataframe)
-    
+
     print(f"Valid salary records: {len(cleaned_salary_data)}")
     print(f"Average salary: ${cleaned_salary_data['salary'].mean():,.0f}")
     return cleaned_salary_data
@@ -240,7 +242,9 @@ def analyze_industry(cleaned_salary_data):
     valid_industries = industry_counts[industry_counts >= 10].index
 
     if len(valid_industries) > 0:
-        industry_data = cleaned_salary_data[cleaned_salary_data["Industry"].isin(valid_industries)]
+        industry_data = cleaned_salary_data[
+            cleaned_salary_data["Industry"].isin(valid_industries)
+        ]
         industry_impact = (
             industry_data.groupby("Industry")["salary"]
             .agg(["mean", "count"])
@@ -377,6 +381,7 @@ def build_ml_model(cleaned_salary_data):
         print("No valid features for modeling")
         return None
 
+
 def encode_company_size(modeling_dataframe, features):
     """Encode company size as categorical feature for ML"""
     size_valid = modeling_dataframe.dropna(subset=["Size"])
@@ -391,7 +396,7 @@ def encode_company_size(modeling_dataframe, features):
             )
         )
         features.append("size_encoded")
-    return modeling_dataframe, features 
+    return modeling_dataframe, features
 
 
 def performance_comparison():
@@ -564,9 +569,13 @@ def main():
     importance = build_ml_model(cleaned_salary_data)
 
     rating_data = (
-        cleaned_salary_data.dropna(subset=["rating"]) if "rating" in cleaned_salary_data.columns else None
+        cleaned_salary_data.dropna(subset=["rating"])
+        if "rating" in cleaned_salary_data.columns
+        else None
     )
-    create_visualizations(cleaned_salary_data, size_impact, industry_impact, rating_data)
+    create_visualizations(
+        cleaned_salary_data, size_impact, industry_impact, rating_data
+    )
 
     generate_conclusion(size_impact, industry_impact, importance)
 
