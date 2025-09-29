@@ -25,7 +25,7 @@ from unittest.mock import patch
 import warnings
 from salary_analysis import (
     load_data,
-    extract_salary,
+    parse_salary_range,
     clean_data,
     clean_data_polars,
     analyze_company_size,
@@ -58,9 +58,9 @@ class TestUnitTests(unittest.TestCase):
 
     def test_salary_extraction(self):
         """Test salary extraction from string"""
-        self.assertEqual(extract_salary("$50K-$70K"), 60000)
-        self.assertEqual(extract_salary("80K-100K"), 90000)
-        self.assertTrue(pd.isna(extract_salary("Invalid")))
+        self.assertEqual(parse_salary_range("$50K-$70K"), 60000)
+        self.assertEqual(parse_salary_range("80K-100K"), 90000)
+        self.assertTrue(pd.isna(parse_salary_range("Invalid")))
 
     def test_data_filtering(self):
         """Test data cleaning and filtering"""

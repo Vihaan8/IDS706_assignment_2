@@ -38,9 +38,9 @@ def load_data():
     print("Loading data...")
 
     try:
-        df = pd.read_csv("DataAnalyst.csv")
-        print(f"Dataset shape: {df.shape}")
-        return df
+        salary_dataframe = pd.read_csv("DataAnalyst.csv")
+        print(f"Dataset shape: {salary_dataframe.shape}")
+        return salary_dataframe
     except FileNotFoundError:
         print("ERROR: DataAnalyst.csv file not found!")
         print("Please ensure the CSV file is in the same directory as this script.")
@@ -58,7 +58,7 @@ def load_data_polars():
         return None
 
 
-def extract_salary(salary_str):
+def parse_salary_range(salary_str):
     """Extract average salary from salary string"""
     if pd.isna(salary_str):
         return np.nan
@@ -108,26 +108,26 @@ def extract_salary_polars(salary_str):
     return None
 
 
-def clean_data(df):
+def filter_valid_salary_range(raw_dataframe):
+    """Filter salaries to realistic range (20K-200K)"""
+    df_clean = raw_dataframe.dropna(subset=["salary"])
+    df_clean = df_clean[(df_clean["salary"] >= 20000) & (df_clean["salary"] <= 200000)]
+    return df_clean
+
+
+def clean_data(raw_dataframe):
     """Clean and preprocess the dataset using pandas"""
     print("Extracting salaries...")
-    df["salary"] = df["Salary Estimate"].apply(extract_salary)
-
-    # Clean ratings - only keep valid ratings (1.0 to 5.0)
-    df["rating"] = pd.to_numeric(df["Rating"], errors="coerce")
-    df["rating"] = df["rating"].where((df["rating"] >= 1.0) & (df["rating"] <= 5.0))
-
-    # Clean company size - remove weird values like "-1"
-    df["Size"] = df["Size"].replace(["-1", "Unknown"], np.nan)
-
-    # Filter valid data
-    df_clean = df.dropna(subset=["salary"])
-    df_clean = df_clean[(df_clean["salary"] >= 20000) & (df_clean["salary"] <= 200000)]
-
-    print(f"Valid salary records: {len(df_clean)}")
-    print(f"Average salary: ${df_clean['salary'].mean():,.0f}")
-
-    return df_clean
+    raw_dataframe["salary"] = raw_dataframe["Salary Estimate"].apply(parse_salary_range)
+    raw_dataframe["rating"] = pd.to_numeric(raw_dataframe["Rating"], errors="coerce")
+    raw_dataframe["rating"] = raw_dataframe["rating"].where((raw_dataframe["rating"] >= 1.0) & (raw_dataframe["rating"] <= 5.0))
+    raw_dataframe["Size"] = raw_dataframe["Size"].replace(["-1", "Unknown"], np.nan)
+    
+    cleaned_salary_data = filter_valid_salary_range(raw_dataframe)
+    
+    print(f"Valid salary records: {len(cleaned_salary_data)}")
+    print(f"Average salary: ${cleaned_salary_data['salary'].mean():,.0f}")
+    return cleaned_salary_data
 
 
 def clean_data_polars(df):
@@ -183,10 +183,10 @@ def clean_data_polars(df):
     return df_clean
 
 
-def analyze_company_size(df_clean):
+def analyze_company_size(cleaned_salary_data):
     """Analyze salary by company size using pandas"""
     print("\n1. Company Size Impact:")
-    size_data = df_clean.dropna(subset=["Size"])
+    size_data = cleaned_salary_data.dropna(subset=["Size"])
 
     if len(size_data) > 0:
         size_impact = (
@@ -233,14 +233,14 @@ def analyze_company_size_polars(df_clean):
         return None
 
 
-def analyze_industry(df_clean):
+def analyze_industry(cleaned_salary_data):
     """Analyze salary by industry (only reliable data) using pandas"""
     print("\n2. Top Industries (min 10 records):")
-    industry_counts = df_clean["Industry"].value_counts()
+    industry_counts = cleaned_salary_data["Industry"].value_counts()
     valid_industries = industry_counts[industry_counts >= 10].index
 
     if len(valid_industries) > 0:
-        industry_data = df_clean[df_clean["Industry"].isin(valid_industries)]
+        industry_data = cleaned_salary_data[cleaned_salary_data["Industry"].isin(valid_industries)]
         industry_impact = (
             industry_data.groupby("Industry")["salary"]
             .agg(["mean", "count"])
@@ -295,10 +295,10 @@ def analyze_industry_polars(df_clean):
         return None
 
 
-def analyze_rating(df_clean):
+def analyze_rating(cleaned_salary_data):
     """Analyze salary by company rating using pandas"""
     print("\n3. Rating Impact:")
-    rating_data = df_clean.dropna(subset=["rating"])
+    rating_data = cleaned_salary_data.dropna(subset=["rating"])
 
     if len(rating_data) > 0:
         # Create proper rating categories
@@ -330,39 +330,28 @@ def analyze_rating(df_clean):
         return None
 
 
-def build_ml_model(df_clean):
+def build_ml_model(cleaned_salary_data):
     """Build machine learning model to identify most important factors"""
     print("\nMachine Learning Analysis:")
     print("-" * 25)
 
-    model_df = df_clean.copy()
+    modeling_dataframe = cleaned_salary_data.copy()
     features = []
 
     # Encode company size (only valid sizes)
-    size_valid = model_df.dropna(subset=["Size"])
-    if len(size_valid) > 50:
-        le_size = LabelEncoder()
-        le_size.fit(size_valid["Size"])
-        model_df["size_encoded"] = model_df["Size"].apply(
-            lambda x: (
-                le_size.transform([x])[0]
-                if pd.notna(x) and x in le_size.classes_
-                else np.nan
-            )
-        )
-        features.append("size_encoded")
+    modeling_dataframe, features = encode_company_size(modeling_dataframe, features)
 
     # Use cleaned ratings
-    rating_valid = model_df.dropna(subset=["rating"])
+    rating_valid = modeling_dataframe.dropna(subset=["rating"])
     if len(rating_valid) > 50:
-        model_df["rating_filled"] = model_df["rating"].fillna(
-            model_df["rating"].median()
+        modeling_dataframe["rating_filled"] = modeling_dataframe["rating"].fillna(
+            modeling_dataframe["rating"].median()
         )
         features.append("rating_filled")
 
     # Build model if we have features
     if len(features) > 0:
-        model_data = model_df[features + ["salary"]].dropna()
+        model_data = modeling_dataframe[features + ["salary"]].dropna()
 
         if len(model_data) > 50:
             X = model_data[features]
@@ -388,6 +377,22 @@ def build_ml_model(df_clean):
         print("No valid features for modeling")
         return None
 
+def encode_company_size(modeling_dataframe, features):
+    """Encode company size as categorical feature for ML"""
+    size_valid = modeling_dataframe.dropna(subset=["Size"])
+    if len(size_valid) > 50:
+        le_size = LabelEncoder()
+        le_size.fit(size_valid["Size"])
+        modeling_dataframe["size_encoded"] = modeling_dataframe["Size"].apply(
+            lambda x: (
+                le_size.transform([x])[0]
+                if pd.notna(x) and x in le_size.classes_
+                else np.nan
+            )
+        )
+        features.append("size_encoded")
+    return modeling_dataframe, features 
+
 
 def performance_comparison():
     """Compare performance between pandas and Polars"""
@@ -400,17 +405,17 @@ def performance_comparison():
 
     # Pandas loading
     start_time = time.time()
-    df_pandas = load_data()
+    pandas_salary_data = load_data()
     pandas_load_time = time.time() - start_time
     print(f"   Pandas loading time: {pandas_load_time:.3f} seconds")
 
     # Polars loading
     start_time = time.time()
-    df_polars = load_data_polars()
+    polars_salary_data = load_data_polars()
     polars_load_time = time.time() - start_time
     print(f"   Polars loading time: {polars_load_time:.3f} seconds")
 
-    if df_pandas is None or df_polars is None:
+    if pandas_salary_data is None or polars_salary_data is None:
         print("Cannot perform comparison - data loading failed")
         return
 
@@ -419,13 +424,13 @@ def performance_comparison():
 
     # Pandas cleaning
     start_time = time.time()
-    df_clean_pandas = clean_data(df_pandas.copy())
+    cleaned_pandas_data = clean_data(pandas_salary_data.copy())
     pandas_clean_time = time.time() - start_time
     print(f"   Pandas cleaning time: {pandas_clean_time:.3f} seconds")
 
     # Polars cleaning
     start_time = time.time()
-    df_clean_polars = clean_data_polars(df_polars.clone())
+    cleaned_polars_data = clean_data_polars(polars_salary_data.clone())
     polars_clean_time = time.time() - start_time
     print(f"   Polars cleaning time: {polars_clean_time:.3f} seconds")
 
@@ -434,13 +439,13 @@ def performance_comparison():
 
     # Pandas groupby
     start_time = time.time()
-    analyze_company_size(df_clean_pandas)
+    analyze_company_size(cleaned_pandas_data)
     pandas_groupby_time = time.time() - start_time
     print(f"   Pandas groupby time: {pandas_groupby_time:.3f} seconds")
 
     # Polars groupby
     start_time = time.time()
-    analyze_company_size_polars(df_clean_polars)
+    analyze_company_size_polars(cleaned_polars_data)
     polars_groupby_time = time.time() - start_time
     print(f"   Polars groupby time: {polars_groupby_time:.3f} seconds")
 
@@ -543,25 +548,25 @@ def generate_conclusion(size_impact, industry_impact, importance):
 def main():
     """Main function to run the complete analysis"""
     # Original analysis with pandas
-    df = load_data()
-    if df is None:
+    raw_salary_data = load_data()
+    if raw_salary_data is None:
         return
 
-    df_clean = clean_data(df)
+    cleaned_salary_data = clean_data(raw_salary_data)
 
     print("\nFactor Analysis:")
     print("-" * 20)
 
-    size_impact = analyze_company_size(df_clean)
-    industry_impact = analyze_industry(df_clean)
-    analyze_rating(df_clean)
+    size_impact = analyze_company_size(cleaned_salary_data)
+    industry_impact = analyze_industry(cleaned_salary_data)
+    analyze_rating(cleaned_salary_data)
 
-    importance = build_ml_model(df_clean)
+    importance = build_ml_model(cleaned_salary_data)
 
     rating_data = (
-        df_clean.dropna(subset=["rating"]) if "rating" in df_clean.columns else None
+        cleaned_salary_data.dropna(subset=["rating"]) if "rating" in cleaned_salary_data.columns else None
     )
-    create_visualizations(df_clean, size_impact, industry_impact, rating_data)
+    create_visualizations(cleaned_salary_data, size_impact, industry_impact, rating_data)
 
     generate_conclusion(size_impact, industry_impact, importance)
 

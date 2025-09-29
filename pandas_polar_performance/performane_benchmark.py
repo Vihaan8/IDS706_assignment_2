@@ -17,7 +17,7 @@ import polars as pl
 import time
 import numpy as np
 from salary_analysis import (
-    extract_salary, extract_salary_polars,
+    parse_salary_range, extract_salary_polars,
     clean_data, clean_data_polars
 )
 
