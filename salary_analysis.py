@@ -344,9 +344,11 @@ def build_ml_model(df_clean):
         le_size = LabelEncoder()
         le_size.fit(size_valid["Size"])
         model_df["size_encoded"] = model_df["Size"].apply(
-            lambda x: le_size.transform([x])[0]
-            if pd.notna(x) and x in le_size.classes_
-            else np.nan
+            lambda x: (
+                le_size.transform([x])[0]
+                if pd.notna(x) and x in le_size.classes_
+                else np.nan
+            )
         )
         features.append("size_encoded")
 
