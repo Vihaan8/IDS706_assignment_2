@@ -6,19 +6,19 @@
 **Assignment:** Mini Assignment - Data Analysis  
 **Institution:** Duke University  
 
-## CI/CD Badge
+## CI/CD Pipeline
 [![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
 
+![CI/CD Pipeline](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/CI_CD.png)
 
+Our CI/CD pipeline (`.github/workflows/ci.yaml`) automatically runs on every push and pull request, performing code quality checks with black and flake8, running comprehensive tests with pytest, and executing the full salary analysis to ensure code reliability and maintainability.
 
 ## 📊 Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
 
 This repository contains a **Data Analyst Salary Analysis** project for **Data Engineering Systems (IDS 706)** mini assignment. The project analyzes a dataset of Data Analyst job postings to identify the key factors that influence salary levels, demonstrating data science workflows including data cleaning, exploratory analysis, machine learning, and visualization.
 
-
 The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs/data. Thanks to @andrewmvd on Kaggle!
-
 
 ## 📁 Project Files
 
@@ -52,6 +52,31 @@ salary-analysis/
 - **Reproducible Docker image** for consistent execution
 - **VS Code Dev Container** for full development environment setup
 
+## 🔧 Code Refactoring
+
+The codebase has been refactored to improve readability, maintainability, and follow best practices:
+
+### Rename Variables for Clarity
+Using VS Code's F2 rename feature, variables were renamed throughout the codebase for better semantic meaning:
+
+![Variable Renaming 1](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor1.png)
+
+![Variable Renaming 2](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor2.png)
+
+- `df` → `raw_dataframe` / `cleaned_salary_data` for clearer data pipeline understanding
+- `extract_salary()` → `parse_salary_range()` for more accurate function naming
+- All parameter and variable names updated consistently across the codebase
+
+### Extract Methods for Modularity
+Complex code blocks were extracted into separate, reusable functions using VS Code's extract method feature:
+
+![Extract Method 1](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor3.png)
+
+![Extract Method 2](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor4.png)
+
+- `filter_valid_salary_range()` - Extracted salary filtering logic for reusability
+- `encode_company_size()` - Separated feature engineering from model building
+- Improved code organization and testability
 
 ## 📦 Dependencies
 
@@ -63,9 +88,8 @@ The project uses the following Python packages (defined in `requirements.txt`):
 - **scikit-learn>=1.0.0** - Machine learning algorithms
 - **pytest>=6.0.0** - Testing framework
 - **pytest-cov>=3.0.0** - Coverage reporting
-- **black>=22.0.0** - Code formatting
+- **black==25.1.0** - Code formatting
 - **flake8>=4.0.0** - Code linting
-
 
 ## 🚀 Usage
 
@@ -93,7 +117,6 @@ make lint       # Check code quality
 make run        # Execute analysis
 ```
 
-
 ## ⚙️ Setup & Testing
 
 ### Local (optional)
@@ -120,14 +143,11 @@ The Dev Container extends the Docker setup by letting VS Code open directly insi
 2. Install [VS Code](https://code.visualstudio.com/)  
 3. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)  
 4. Open this repo in VS Code.  
-5. Press **View → Command Palette…** → search for **“Dev Containers: Reopen in Container”**.  
+5. Press **View → Command Palette…** → search for **"Dev Containers: Reopen in Container"**.  
 6. Once inside, open a terminal and run:
    ```bash
    make tests
    ```
-
-
-
 
 ## 🧪 Testing
 
@@ -146,10 +166,9 @@ Results:
 - Coverage summary in the terminal.
 - Full HTML coverage report in `htmlcov/index.html`.
 
-Here’s an example run of the full test suite with coverage:
+Here's an example run of the full test suite with coverage:
 
 ![Testing Results](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/tests_results_combined.png)
-
 
 ## 🔄 Analysis Workflow
 
@@ -182,7 +201,6 @@ The analysis follows a structured data science pipeline:
 ## ⚡ Performance Analysis
 This project includes a comprehensive performance comparison between pandas and Polars for data processing operations. The analysis benchmarks data loading, cleaning, and grouping operations to evaluate the efficiency of modern data tools. For detailed performance results, benchmarking methodology, and insights, see the complete analysis in pandas_polar_performance/POLARS_PERFORMANCE_ANALYSIS.md.
 
-
 ## 🔍 Key Findings
 
 The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. This finding emerges from both statistical analysis and visual examination of the data patterns.
@@ -200,7 +218,6 @@ The analysis reveals that **company rating** is the most influential factor for 
 ### Visualization Insights:
 
 To validate my statistical findings and uncover patterns not immediately apparent in the numbers, I created four complementary visualizations:
-
 
 ![Alt Text](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
 
@@ -224,7 +241,6 @@ To validate my statistical findings and uncover patterns not immediately apparen
 - **Company size is overrated**: Minimal salary variation across different company sizes
 - **Look beyond surface metrics**: The most predictive factors may not be the most visually obvious
 
-
 ## 🛠️ Troubleshooting
 
 **Dataset not found:**
@@ -247,6 +263,6 @@ ModuleNotFoundError: No module named 'pandas'
 
 ---
 
-**Author:** Vihaan Manchanda 
-**Date:** September 6, 2025
+**Author:** Vihaan Manchanda  
+**Date:** September 6, 2025  
 **Repository:** https://github.com/Vihaan8/IDS706_assignment_2.git
