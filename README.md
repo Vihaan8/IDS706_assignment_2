@@ -6,12 +6,6 @@
 **Assignment:** Mini Assignment - Data Analysis  
 **Institution:** Duke University  
 
-## CI/CD Pipeline
-[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
-
-![CI/CD Pipeline](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/CI_CD.png)
-
-Our CI/CD pipeline (`.github/workflows/ci.yaml`) automatically runs on every push and pull request, performing code quality checks with black and flake8, running comprehensive tests with pytest, and executing the full salary analysis to ensure code reliability and maintainability.
 
 ## 📊 Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
@@ -51,6 +45,12 @@ salary-analysis/
 - **Comprehensive test suite** (unit, integration, system, and performance tests with coverage)
 - **Reproducible Docker image** for consistent execution
 - **VS Code Dev Container** for full development environment setup
+
+
+## CI/CD Pipeline
+[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
+
+![CI/CD Pipeline](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/CI_CD.png)
 
 ## 🔧 Code Refactoring
 
