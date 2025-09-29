@@ -6,6 +6,22 @@
 **Assignment:** Mini Assignment - Data Analysis  
 **Institution:** Duke University  
 
+## Table of Contents
+
+- [Project Overview](#-project-overview)
+- [Project Files](#-project-files)
+- [Features](#-features)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Code Refactoring](#-code-refactoring)
+- [Dependencies](#-dependencies)
+- [Usage](#-usage)
+- [Setup & Testing](#-setup--testing)
+- [Testing](#-testing)
+- [Analysis Workflow](#-analysis-workflow)
+- [Performance Analysis](#-performance-analysis)
+- [Key Findings](#-key-findings)
+- [Troubleshooting](#-troubleshooting)  
+
 
 ## 📊 Project Overview
 **Research Question: "What factors influence Data Analyst salaries the most?"**
