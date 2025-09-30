@@ -296,7 +296,7 @@ Here's an example run of the full test suite with coverage:
 
 ## Analysis
 
-### Data Pipeline
+### Analysis Workflow Figure
 
 ```mermaid
 graph TB
@@ -329,8 +329,29 @@ graph TB
 ```
 
 ### Analysis Workflow
-
 The analysis follows a structured data science pipeline:
+
+#### Data Pipeline Figure
+
+```mermaid
+sequenceDiagram
+    participant CSV as Raw CSV
+    participant Load as Data Loading
+    participant Clean as Cleaning
+    participant Analysis as Analysis
+    participant ML as ML Model
+    participant Results as Results
+    
+    CSV->>Load: 2,253 records
+    Load->>Clean: Extract salaries
+    Clean->>Clean: Filter valid ranges
+    Clean->>Analysis: 2,252 clean records
+    Analysis->>ML: Features (size, rating, industry)
+    ML->>Results: Feature importance ranking
+    Analysis->>Results: Statistical groupings
+    Results->>Results: Visualizations + Conclusions
+```
+
 
 #### 1. Data Loading & Cleaning
 
