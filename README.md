@@ -1,10 +1,19 @@
-# Mini-Assignment 2 - Data Analyst Salary Analysis
+<div align="center">
 
-## 🎓 Course Information
+# Data Analyst Salary Analysis
 
-**Course:** Data Engineering Systems (IDS 706)  
-**Assignment:** Mini Assignment - Data Analysis  
-**Institution:** Duke University  
+**Identifying the Key Factors That Drive Data Analyst Compensation**
+
+[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Tests](https://img.shields.io/badge/Tests-Passing-success)
+
+**Course:** Data Engineering Systems (IDS 706) | **Institution:** Duke University
+
+
+</div>
 
 ## Table of Contents
 
@@ -29,6 +38,33 @@
 This repository contains a **Data Analyst Salary Analysis** project for **Data Engineering Systems (IDS 706)** mini assignment. The project analyzes a dataset of Data Analyst job postings to identify the key factors that influence salary levels, demonstrating data science workflows including data cleaning, exploratory analysis, machine learning, and visualization.
 
 The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs/data. Thanks to @andrewmvd on Kaggle!
+
+---
+
+## 🏆 Key Findings
+
+> **TL;DR:** Company rating is the most influential factor for Data Analyst salaries, even more than company size or industry—a surprising result that challenges conventional wisdom.
+
+### 📈 Quick Results Summary
+
+| Metric | Value | Insight |
+|--------|-------|---------|
+| **Dataset Size** | 2,252 jobs | After cleaning from 2,253 raw records |
+| **Average Salary** | $72,123 | Median: $70,000 |
+| **Salary Range** | $20K - $200K | Filtered for realistic ranges |
+| **Top Predictor** | Company Rating | 0.579 importance (ML model) |
+| **Highest Paying Industry** | Biotech & Pharma | $83,106 avg (+15% vs overall) |
+| **Optimal Company Size** | 5K-10K employees | $74,201 avg |
+| **Performance Gain** | Polars 2.3x faster | For data processing operations |
+
+### 🎓 Implications for Job Seekers
+
+1. **Prioritize company culture** — Rating predicts salary better than obvious factors like company size
+2. **Industry selection matters** — Top sectors command $10K+ premiums
+3. **Company size is overrated** — Minimal salary variation across different company sizes ($5K range)
+4. **Look beyond surface metrics** — The most predictive factors aren't always the most visually obvious
+
+---
 
 ## 📁 Project Files
 
@@ -61,12 +97,6 @@ salary-analysis/
 - **Comprehensive test suite** (unit, integration, system, and performance tests with coverage)
 - **Reproducible Docker image** for consistent execution
 - **VS Code Dev Container** for full development environment setup
-
-
-## CI/CD Pipeline
-[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
-
-![CI/CD Pipeline](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/CI_CD.png)
 
 ## 🔧 Code Refactoring
 
