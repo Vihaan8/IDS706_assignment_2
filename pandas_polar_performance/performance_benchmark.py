@@ -12,6 +12,12 @@ Author: Vihaan Manchanda
 Date: September 6, 2025
 """
 
+import sys
+import os
+
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/..'))
+
 import pandas as pd
 import polars as pl
 import time

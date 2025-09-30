@@ -10,63 +10,83 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Tests](https://img.shields.io/badge/Tests-Passing-success)
 
-**Course:** Data Engineering Systems (IDS 706) | **Institution:** Duke University
+**Vihaan Manchanda**  
+Data Engineering Systems (IDS 706) — Duke University
 
+**Date:** September 28, 2025  
 
 </div>
 
+---
+
 ## Table of Contents
 
-- [Project Overview](#-project-overview)
-- [Project Files](#-project-files)
-- [Features](#-features)
-- [CI/CD Pipeline](#cicd-pipeline)
-- [Code Refactoring](#-code-refactoring)
-- [Dependencies](#-dependencies)
-- [Usage](#-usage)
-- [Setup & Testing](#-setup--testing)
-- [Testing](#-testing)
-- [Analysis Workflow](#-analysis-workflow)
-- [Performance Analysis](#-performance-analysis)
-- [Key Findings](#-key-findings)
-- [Troubleshooting](#-troubleshooting)  
-
-
-## 📊 Project Overview
-**Research Question: "What factors influence Data Analyst salaries the most?"**
-
-This repository contains a **Data Analyst Salary Analysis** project for **Data Engineering Systems (IDS 706)** mini assignment. The project analyzes a dataset of Data Analyst job postings to identify the key factors that influence salary levels, demonstrating data science workflows including data cleaning, exploratory analysis, machine learning, and visualization.
-
-The Dataset is publically available on Kaggle - https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs/data. Thanks to @andrewmvd on Kaggle!
+- [Research Summary](#-research-summary)
+  - [Research Question](#research-question)
+  - [Key Findings](#key-findings)
+  - [Implications for Job Seekers](#implications-for-job-seekers)
+- [Project Setup](#-project-setup)
+  - [File Structure](#file-structure)
+  - [Tech Stack & Features](#tech-stack--features)
+  - [Dependencies](#dependencies)
+  - [Quick Start](#quick-start)
+  - [CI/CD Pipeline](#cicd-pipeline)
+  - [Code Refactoring](#code-refactoring)
+- [Analysis](#-analysis)
+  - [Data Pipeline](#data-pipeline)
+  - [Analysis Workflow](#analysis-workflow)
+  - [Performance Analysis](#performance-analysis)
+  - [Visualizations](#visualizations)
+  - [How I Reached My Conclusions](#how-i-reached-my-conclusions)
+- [Troubleshooting](#troubleshooting)
+- [Data Source](#data-source)
+- [Author](#author)
 
 ---
 
-## 🏆 Key Findings
+## Research Summary
 
-> **TL;DR:** Company rating is the most influential factor for Data Analyst salaries, even more than company size or industry—a surprising result that challenges conventional wisdom.
+### Research Question
 
-### 📈 Quick Results Summary
+**"What factors influence Data Analyst salaries the most?"**
+
+This repository contains a Data Analyst Salary Analysis project for Data Engineering Systems (IDS 706) mini assignment. The project analyzes a dataset of Data Analyst job postings to identify the key factors that influence salary levels, demonstrating data science workflows including data cleaning, exploratory analysis, machine learning, and visualization.
+
+The Dataset is publicly available on Kaggle - https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs/data. Thanks to @andrewmvd on Kaggle!
+
+### Key Findings
+
+> **Bottom Line:** Company rating is the most influential factor for Data Analyst salaries, even more than company size or industry.
+
+This finding emerges from both statistical analysis and visual examination of the data patterns.
+
+#### Primary Statistical Results
 
 | Metric | Value | Insight |
 |--------|-------|---------|
 | **Dataset Size** | 2,252 jobs | After cleaning from 2,253 raw records |
-| **Average Salary** | $72,123 | Median: $70,000 |
-| **Salary Range** | $20K - $200K | Filtered for realistic ranges |
-| **Top Predictor** | Company Rating | 0.579 importance (ML model) |
-| **Highest Paying Industry** | Biotech & Pharma | $83,106 avg (+15% vs overall) |
-| **Optimal Company Size** | 5K-10K employees | $74,201 avg |
-| **Performance Gain** | Polars 2.3x faster | For data processing operations |
+| **Average Salary** | $72,123 | Across all analyzed job postings |
+| **Most Important Factor** | Company Rating | 0.579 importance score (Random Forest) |
+| **Secondary Factor** | Company Size | 0.421 importance score |
 
-### 🎓 Implications for Job Seekers
+#### Detailed Factor Analysis
+
+- **Company Size**: Mid-large companies (5,001-10,000 employees) pay highest ($74,201)
+- **Industry**: Biotech & Pharmaceuticals leads with $83,106 average salary
+- **Company Rating**: Surprisingly, "Poor" rated companies pay highest ($75,035), indicating complex market dynamics
+
+### Implications for Job Seekers
 
 1. **Prioritize company culture** — Rating predicts salary better than obvious factors like company size
-2. **Industry selection matters** — Top sectors command $10K+ premiums
-3. **Company size is overrated** — Minimal salary variation across different company sizes ($5K range)
-4. **Look beyond surface metrics** — The most predictive factors aren't always the most visually obvious
+2. **Industry selection matters** — Visual evidence shows clear $10K+ premiums in top sectors
+3. **Company size is overrated** — Minimal salary variation across different company sizes
+4. **Look beyond surface metrics** — The most predictive factors may not be the most visually obvious
 
 ---
 
-## 📁 Project Files
+## Project Setup
+
+### File Structure
 
 ```
 salary-analysis/
@@ -84,25 +104,133 @@ salary-analysis/
     └── devcontainer.json    
 ```
 
-## ✨ Features
-- **Python 3.11** environment setup
-- **Data cleaning and preprocessing** with pandas
-- **Exploratory Data Analysis** with statistical grouping
-- **Machine Learning** with Random Forest for feature importance
-- **Data visualization** with matplotlib
-- **Unit testing** with pytest
-- **Code formatting** with black
-- **Code linting** with flake8
-- **Makefile** for automated workflow
-- **Comprehensive test suite** (unit, integration, system, and performance tests with coverage)
-- **Reproducible Docker image** for consistent execution
-- **VS Code Dev Container** for full development environment setup
+### Tech Stack & Features
 
-## 🔧 Code Refactoring
+#### Core Technologies
+- **Python 3.11** environment setup
+- **pandas >= 1.3.0** - Data manipulation and analysis
+- **numpy >= 1.21.0** - Numerical computing
+- **matplotlib >= 3.5.0** - Data visualization
+- **scikit-learn >= 1.0.0** - Machine learning algorithms
+- **polars >= 0.20.0** - High-performance data processing
+
+#### Development Tools
+- **pytest >= 6.0.0** - Testing framework
+- **pytest-cov >= 3.0.0** - Coverage reporting
+- **black == 25.1.0** - Code formatting
+- **flake8 >= 4.0.0** - Code linting
+
+#### Key Features
+- Data cleaning and preprocessing with pandas
+- Exploratory Data Analysis with statistical grouping
+- Machine Learning with Random Forest for feature importance
+- Data visualization with matplotlib
+- Unit testing with pytest
+- Code formatting with black
+- Code linting with flake8
+- Makefile for automated workflow
+- Comprehensive test suite (unit, integration, system, and performance tests with coverage)
+- Reproducible Docker image for consistent execution
+- VS Code Dev Container for full development environment setup
+
+### Dependencies
+
+All dependencies are defined in `requirements.txt`:
+
+```
+pandas>=1.3.0
+numpy>=1.21.0  
+matplotlib>=3.5.0
+scikit-learn>=1.0.0
+polars>=0.20.0
+black==25.1.0
+flake8>=4.0.0
+pytest>=6.0.0
+pytest-cov>=3.0.0
+```
+
+### Quick Start
+
+#### Makefile Commands
+
+The project uses a Makefile for automated workflow management:
+
+**Available Make Commands:**
+- `make install` - Install and upgrade dependencies
+- `make format` - Format code using black
+- `make lint` - Lint code using flake8
+- `make tests` - Run all tests with coverage
+- `make run` - Execute the salary analysis
+- `make clean` - Remove cache files
+- `make all` - Run complete workflow (install, format, lint, test, run)
+
+**Example Usage:**
+```bash
+# Complete analysis workflow
+make all
+
+# Individual commands (if needed)
+make install    # Install dependencies
+make tests      # Run tests
+make format     # Format code
+make lint       # Check code quality
+make run        # Execute analysis
+```
+
+#### Docker Setup (Recommended)
+
+Build the Docker image:
+```bash
+docker build -t salary-analysis:dev .
+```
+
+Run tests inside the container (with coverage report in `htmlcov/`):
+```bash
+docker run --rm -it -v "$PWD":/app -w /app salary-analysis:dev bash -lc "make tests"
+```
+
+#### VS Code Dev Container
+
+The Dev Container extends the Docker setup by letting VS Code open directly inside the container - giving a consistent Python environment, dependencies, and tools without needing to install them locally.
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)  
+2. Install [VS Code](https://code.visualstudio.com/)  
+3. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)  
+4. Open this repo in VS Code.  
+5. Press **View → Command Palette...** → search for **"Dev Containers: Reopen in Container"**.  
+6. Once inside, open a terminal and run:
+   ```bash
+   make tests
+   ```
+
+#### Local Setup (Optional)
+
+Run locally with Python 3.11:
+```bash
+make install
+make tests
+```
+
+### CI/CD Pipeline
+
+[![CI](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Vihaan8/IDS706_assignment_2/actions/workflows/ci.yaml)
+
+The project includes automated continuous integration that runs on every commit:
+
+- Install dependencies
+- Format code with black
+- Lint code with flake8
+- Run comprehensive test suite
+- Generate coverage reports
+
+![CI/CD Pipeline](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/CI_CD.png)
+
+### Code Refactoring
 
 The codebase has been refactored to improve readability, maintainability, and follow best practices:
 
-### Rename Variables for Clarity
+#### Rename Variables for Clarity
+
 Using VS Code's F2 rename feature, variables were renamed throughout the codebase for better semantic meaning:
 
 ![Variable Renaming 1](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor1.png)
@@ -113,7 +241,8 @@ Using VS Code's F2 rename feature, variables were renamed throughout the codebas
 - `extract_salary()` → `parse_salary_range()` for more accurate function naming
 - All parameter and variable names updated consistently across the codebase
 
-### Extract Methods for Modularity
+#### Extract Methods for Modularity
+
 Complex code blocks were extracted into separate, reusable functions using VS Code's extract method feature:
 
 ![Extract Method 1](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/refactor3.png)
@@ -124,191 +253,285 @@ Complex code blocks were extracted into separate, reusable functions using VS Co
 - `encode_company_size()` - Separated feature engineering from model building
 - Improved code organization and testability
 
-## 📦 Dependencies
+### Usage and Testing
 
-The project uses the following Python packages (defined in `requirements.txt`):
+#### Running the Analysis
 
-- **pandas>=1.3.0** - Data manipulation and analysis
-- **numpy>=1.21.0** - Numerical computing
-- **matplotlib>=3.5.0** - Data visualization
-- **scikit-learn>=1.0.0** - Machine learning algorithms
-- **pytest>=6.0.0** - Testing framework
-- **pytest-cov>=3.0.0** - Coverage reporting
-- **black==25.1.0** - Code formatting
-- **flake8>=4.0.0** - Code linting
-
-## 🚀 Usage
-
-The project uses a Makefile for automated workflow management:
-
-### Available Make Commands
-- `make install` - Install and upgrade dependencies
-- `make format` - Format code using black
-- `make lint` - Lint code using flake8
-- `make tests` - Run all tests with coverage
-- `make run` - Execute the salary analysis
-- `make clean` - Remove cache files
-- `make all` - Run complete workflow (install, format, lint, test, run)
-
-### Example Usage
 ```bash
-# Complete analysis workflow
-make all
-
-# Individual commands (if needed)
-make install    # Install dependencies
-make tests       # Run tests
-make format     # Format code
-make lint       # Check code quality
-make run        # Execute analysis
+# Execute complete analysis
+make run
 ```
 
-## ⚙️ Setup & Testing
+The analysis will:
+1. Load the DataAnalyst.csv dataset
+2. Clean and preprocess the data
+3. Perform exploratory analysis
+4. Build machine learning models
+5. Generate visualizations
+6. Output key findings and conclusions
 
-### Local (optional)
-Run locally with Python 3.11:
-```bash
-make install
-make tests
-```
-
-### Docker (recommended)
-Build the Docker image:
-```bash
-docker build -t salary-analysis:dev .
-```
-Run tests inside the container (with coverage report in `htmlcov/`):
-```bash
-docker run --rm -it -v "$PWD":/app -w /app salary-analysis:dev   bash -lc "make tests"
-```
-
-### VS Code Dev Container 
-The Dev Container extends the Docker setup by letting VS Code open directly inside the container - giving a consistent Python environment, dependencies, and tools without needing to install them locally.
-
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)  
-2. Install [VS Code](https://code.visualstudio.com/)  
-3. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)  
-4. Open this repo in VS Code.  
-5. Press **View → Command Palette…** → search for **"Dev Containers: Reopen in Container"**.  
-6. Once inside, open a terminal and run:
-   ```bash
-   make tests
-   ```
-
-## 🧪 Testing
+#### Testing
 
 This project includes comprehensive tests:
 
-- **Unit tests**: verify core functions (loading, filtering, salary extraction, ML).  
-- **Integration tests**: validate the full pipeline from loading → cleaning → analyzing.  
-- **System tests**: edge cases and end-to-end workflows with multiple datasets.  
-- **Performance tests**: compare execution speed between pandas and polars.
+- **Unit tests**: verify core functions (loading, filtering, salary extraction, ML)
+- **Integration tests**: validate the full pipeline from loading → cleaning → analyzing
+- **System tests**: edge cases and end-to-end workflows with multiple datasets
+- **Performance tests**: compare execution speed between pandas and polars
 
-Run all tests (with verbose output, timing, and coverage report):
+**Run all tests** (with verbose output, timing, and coverage report):
 ```bash
 make tests
 ```
-Results:
-- Coverage summary in the terminal.
-- Full HTML coverage report in `htmlcov/index.html`.
+
+**Results:**
+- Coverage summary in the terminal
+- Full HTML coverage report in `htmlcov/index.html`
 
 Here's an example run of the full test suite with coverage:
 
 ![Testing Results](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/tests_results_combined.png)
 
-## 🔄 Analysis Workflow
+---
+
+## Analysis
+
+### Data Pipeline
+
+```mermaid
+graph TB
+    Start([DataAnalyst.csv<br/>2,253 records]) --> Load[Load Data<br/>pandas/polars]
+    Load --> Clean[Data Cleaning<br/>• Extract salaries<br/>• Filter ranges 20K-200K<br/>• Validate ratings 1.0-5.0<br/>• Handle missing values]
+    Clean --> EDA[Exploratory Analysis<br/>2,252 clean records]
+    
+    EDA --> Size[Company Size<br/>Analysis]
+    EDA --> Industry[Industry<br/>Analysis]
+    EDA --> Rating[Rating<br/>Analysis]
+    
+    Size --> ML[Machine Learning<br/>Random Forest]
+    Industry --> ML
+    Rating --> ML
+    
+    ML --> Importance[Feature Importance<br/>Ranking]
+    
+    Clean --> Viz[Visualizations<br/>4 Key Charts]
+    
+    Importance --> Conclusion[Answer: Rating is<br/>most influential<br/>0.579 importance]
+    Viz --> Conclusion
+    
+    Start --> Perf[Performance<br/>Comparison]
+    Perf --> Benchmark[Pandas vs Polars<br/>Benchmark Results]
+    
+    style Start fill:#e1f5ff
+    style Conclusion fill:#d4edda
+    style ML fill:#fff3cd
+    style Perf fill:#f8d7da
+```
+
+### Analysis Workflow
 
 The analysis follows a structured data science pipeline:
 
-1. **Data Loading & Cleaning**
-   - Extracts salary ranges from text format
-   - Cleans company ratings and sizes
-   - Filters realistic salary ranges ($20K-$200K)
+#### 1. Data Loading & Cleaning
 
-2. **Exploratory Data Analysis**
-   - Analyzes salary by company size
-   - Examines industry impact on compensation
-   - Studies company rating effects
+- Extracts salary ranges from text format (e.g., "$50K-$70K" → $60,000)
+- Cleans company ratings and validates 1.0-5.0 range
+- Cleans company size data (removes "-1" and "Unknown" values)
+- Filters realistic salary ranges ($20K-$200K)
+- Drops incomplete records
 
-3. **Machine Learning**
-   - Uses Random Forest Regressor
-   - Identifies most predictive factors
-   - Ranks feature importance
+#### 2. Exploratory Data Analysis
 
-4. **Visualization**
-   - Creates salary distribution plots
-   - Shows factor comparisons
-   - Displays correlation analysis
+**Company Size Analysis:**
+```python
+analyze_company_size(cleaned_salary_data)
+```
+- Groups salaries by employee count ranges
+- Calculates mean salary per size category
+- Identifies highest-paying company sizes
 
-5. **Results & Conclusions**
-   - Answers the research question
-   - Provides data-driven insights
+**Industry Impact:**
+```python
+analyze_industry(cleaned_salary_data)
+```
+- Analyzes salary by industry sector
+- Filters for industries with ≥10 job postings (reliability threshold)
+- Ranks industries by average compensation
 
-## ⚡ Performance Analysis
-This project includes a comprehensive performance comparison between pandas and Polars for data processing operations. The analysis benchmarks data loading, cleaning, and grouping operations to evaluate the efficiency of modern data tools. For detailed performance results, benchmarking methodology, and insights, see the complete analysis in pandas_polar_performance/POLARS_PERFORMANCE_ANALYSIS.md.
+**Company Rating Analysis:**
+```python
+analyze_rating(cleaned_salary_data)
+```
+- Creates rating categories: Poor (1-2.5), Fair (2.5-3.5), Good (3.5-4), Very Good (4-4.5), Excellent (4.5-5)
+- Examines salary patterns across rating brackets
+- Identifies correlations between ratings and pay
 
-## 🔍 Key Findings
+#### 3. Machine Learning
 
-The analysis reveals that **company rating** is the most influential factor for Data Analyst salaries, even more than company size or industry. This finding emerges from both statistical analysis and visual examination of the data patterns.
+**Random Forest Feature Importance:**
+```python
+build_ml_model(cleaned_salary_data)
+```
+- **Algorithm**: Random Forest Regressor (50 trees, random_state=42)
+- **Features**: 
+  - Company size (label-encoded categorical)
+  - Company rating (median-filled for missing values)
+- **Output**: Feature importance scores revealing predictive power
+- **Purpose**: Objectively rank which factors best predict salary
 
-### Primary Statistical Results:
-- **Average Data Analyst Salary**: $72,123 across 2,252 job postings
-- **Most Important Factor**: Company rating (0.579 importance score from Random Forest)
-- **Secondary Factor**: Company size (0.421 importance score)
+The model reveals that company rating (0.579 importance) is the most predictive factor, followed by company size (0.421 importance).
 
-### Detailed Factor Analysis:
-- **Company Size**: Mid-large companies (5,001-10,000 employees) pay highest ($74,201)
-- **Industry**: Biotech & Pharmaceuticals leads with $83,106 average salary
-- **Company Rating**: Surprisingly, "Poor" rated companies pay highest ($75,035), indicating complex market dynamics
+#### 4. Data Visualization
 
-### Visualization Insights:
+```python
+create_visualizations(df_clean, size_impact, industry_impact, rating_data)
+```
+
+Creates comprehensive 4-panel visualization suite:
+- Salary distribution plots
+- Factor comparison charts
+- Correlation analysis
+- Statistical groupings
+
+#### 5. Results & Conclusions
+
+```python
+generate_conclusion(size_impact, industry_impact, importance)
+```
+
+Synthesizes findings to answer the research question with:
+- Statistical evidence from grouping analysis
+- ML-driven insights on predictive factors
+- Data-driven recommendations for job seekers
+
+### Performance Analysis
+
+This project includes a comprehensive performance comparison between pandas and Polars for data processing operations. The analysis benchmarks data loading, cleaning, and grouping operations to evaluate the efficiency of modern data tools.
+
+#### Benchmark Results
+
+```
+1. Data Loading Performance:
+   Pandas loading time: 0.0456 seconds
+   Polars loading time: 0.0041 seconds
+   Speedup: 11.02x
+
+2. Data Cleaning Performance:
+   Pandas cleaning time: 0.0042 seconds
+   Polars cleaning time: 0.0229 seconds
+   Note: Pandas faster on this small dataset
+
+3. GroupBy Operations Performance:
+   Pandas groupby time: 0.0007 seconds
+   Polars groupby time: 0.0017 seconds
+   Note: Pandas faster on this small dataset
+
+4. Performance Summary:
+   Total Pandas time: 0.0506 seconds
+   Total Polars time: 0.0287 seconds
+   Polars is 1.76x faster overall!
+```
+
+#### Performance Summary Table
+
+| Operation | Pandas (s) | Polars (s) | Speedup |
+|-----------|-----------|-----------|---------|
+| **Data Loading** | 0.0456 | 0.0041 | 11.02x |
+| **Data Cleaning** | 0.0042 | 0.0229 | 0.18x (Pandas faster) |
+| **GroupBy** | 0.0007 | 0.0017 | 0.41x (Pandas faster) |
+| **Total** | 0.0506 | 0.0287 | **1.76x** |
+| **Memory Usage** | 11.89 MB | Not measurable | More efficient |
+
+#### Key Performance Insights
+
+**What the Results Show:**
+
+1. **I/O Dominance**: Polars excels at data loading with an 11x speedup, showcasing its efficient CSV parsing
+2. **Small Dataset Overhead**: For this 2,252-row dataset, Polars' initialization overhead makes it slower for cleaning and groupby operations
+3. **Overall Winner**: Despite slower individual operations, the massive I/O advantage gives Polars a net 1.76x speedup
+4. **Scalability**: These advantages would be even more pronounced with larger datasets (100K+ rows)
+
+
+For detailed performance results, benchmarking methodology, and complete analysis, see `pandas_polar_performance/POLARS_PERFORMANCE_ANALYSIS.md`.
+
+### Visualizations
 
 To validate my statistical findings and uncover patterns not immediately apparent in the numbers, I created four complementary visualizations:
 
-![Alt Text](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
+![Visualizations](https://github.com/Vihaan8/IDS706_assignment_2/blob/main/results/Vis_results_figure_1.png)
 
-**Upper Left - Average Salary by Company Size**: This bar chart reveals that salary differences across company sizes are surprisingly minimal (all within ~$5K range), contradicting the common assumption that larger companies always pay significantly more. The visual confirms my statistical finding that company size has modest predictive power.
+#### Upper Left - Average Salary by Company Size
 
-**Upper Right - Top Industries by Salary**: This horizontal bar chart clearly illustrates the industry hierarchy, showing Biotech & Pharmaceuticals with a substantial $10K+ premium over average. The visual spacing between industries demonstrates why industry choice appears impactful in individual cases, even though my ML model ranked it as secondary to company rating.
+This bar chart reveals that salary differences across company sizes are surprisingly minimal (all within approximately $5K range), contradicting the common assumption that larger companies always pay significantly more. The visual confirms my statistical finding that company size has modest predictive power.
 
-**Lower Left - Salary Distribution**: This histogram confirms my data quality with a normal distribution centered around $70-80K. The shape validates that my salary extraction and filtering processes captured realistic market ranges without artificial clustering or outliers skewing results.
+#### Upper Right - Top Industries by Salary
 
-**Lower Right - Salary vs Company Rating**: This scatter plot was crucial for understanding why company rating emerged as the top predictor. While individual points appear scattered, the ML model detected subtle patterns across the 2,252 data points that aren't obvious to the human eye, explaining the apparent contradiction between visual assessment and statistical importance.
+This horizontal bar chart clearly illustrates the industry hierarchy, showing Biotech & Pharmaceuticals with a substantial $10K+ premium over average. The visual spacing between industries demonstrates why industry choice appears impactful in individual cases, even though my ML model ranked it as secondary to company rating.
 
-### How I Reached My Conclusions:
+#### Lower Left - Salary Distribution
 
-1. **Statistical Analysis**: Random Forest algorithm processed all factors simultaneously, revealing company rating as the strongest predictor despite visual scatter
-2. **Visual Validation**: Charts confirmed that while industry shows dramatic individual differences, company rating's predictive power operates across all industries and sizes
-3. **Data Integration**: The combination of statistical modeling and visual analysis revealed that rating's influence is consistent but subtle, making it more reliable than the visually obvious but variable industry effects
+This histogram confirms my data quality with a normal distribution centered around $70-80K. The shape validates that my salary extraction and filtering processes captured realistic market ranges without artificial clustering or outliers skewing results.
 
-### Implications for Job Seekers:
-- **Prioritize company culture**: Rating predicts salary better than obvious factors like company size
-- **Industry selection matters**: Visual evidence shows clear $10K+ premiums in top sectors
-- **Company size is overrated**: Minimal salary variation across different company sizes
-- **Look beyond surface metrics**: The most predictive factors may not be the most visually obvious
+#### Lower Right - Salary vs Company Rating
 
-## 🛠️ Troubleshooting
+This scatter plot was crucial for understanding why company rating emerged as the top predictor. While individual points appear scattered, the ML model detected subtle patterns across the 2,252 data points that aren't obvious to the human eye, explaining the apparent contradiction between visual assessment and statistical importance.
 
-**Dataset not found:**
+### How I Reached My Conclusions
+
+#### 1. Statistical Analysis
+
+Random Forest algorithm processed all factors simultaneously, revealing company rating as the strongest predictor despite visual scatter. The model analyzed 2,252 job postings and computed feature importance scores:
+- Company rating: 0.579 (most influential)
+- Company size: 0.421 (secondary influence)
+
+This quantitative ranking emerged from the model's ability to detect patterns across the entire dataset that aren't visible in individual data points.
+
+#### 2. Visual Validation
+
+Charts confirmed that while industry shows dramatic individual differences (Biotech pays $83K vs overall $72K), company rating's predictive power operates across all industries and sizes. The scatter plot showed why this wasn't immediately obvious—rating's influence is consistent but subtle, requiring machine learning to detect reliably.
+
+#### 3. Data Integration
+
+The combination of statistical modeling and visual analysis revealed that rating's influence is consistent but subtle, making it more reliable than the visually obvious but variable industry effects. Key integration points:
+
+- **Contradiction Resolution**: Industry shows the highest individual salary ($83K for Biotech), but the ML model ranks rating higher because rating's effect is more consistent and predictive across all scenarios
+- **Pattern Detection**: Visual scatter in the rating plot seems random, but ML detected systematic patterns across 2,252 observations
+- **Validation**: The minimal variance in company size salaries ($5K range) visually confirms what the ML model found—size has lower predictive power
+
+#### 4. Key Insight
+
+While industry shows the highest individual salary differences, the ML model reveals that company rating is the most reliable predictor across all scenarios, making it the most influential factor overall. This demonstrates that:
+- Visual patterns can be misleading for complex predictions
+- The most predictive factors aren't always the most visually dramatic
+- Machine learning can uncover subtle but consistent relationships in data
+
+---
+
+## Troubleshooting
+
+<details>
+<summary><b>Dataset not found</b></summary>
+
 ```
 ERROR: DataAnalyst.csv file not found!
 ```
 **Solution:** Ensure `DataAnalyst.csv` is in the project directory
+</details>
 
-**Make command issues:**
+<details>
+<summary><b>Make command issues</b></summary>
+
 ```
 make: command not found
 ```
 **Solution:** Use Git Bash (Windows), or install make via package manager
+</details>
 
-**Dependencies missing:**
+<details>
+<summary><b>Dependencies missing</b></summary>
+
 ```
 ModuleNotFoundError: No module named 'pandas'
 ```
 **Solution:** Run `make all` to install all dependencies
-
----
-
-**Author:** Vihaan Manchanda  
-**Date:** September 28, 2025  
-**Repository:** https://github.com/Vihaan8/IDS706_assignment_2.git
+</details>
